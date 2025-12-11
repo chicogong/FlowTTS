@@ -120,7 +120,9 @@ http_profile.pre_conn_pool_size = 3  # 连接池大小
 
 ## TRTC AI 对话集成
 
-在 TRTC AI 对话配置中加入 TTS 配置：
+在 TRTC AI 对话配置中加入 TTS 配置，`TTSConfig`：
+
+- [对话式 AI TTS 配置](https://cloud.tencent.com/document/product/647/115414)
 
 ```json
 {
