@@ -98,13 +98,20 @@ python examples/example_simple.py
 
 ## Keep-Alive 长连接
 
-SDK 支持 HTTP Keep-Alive，复用 TCP 连接以提升性能：
+SDK 支持 HTTP Keep-Alive，复用 TCP 连接以降低延迟：
 
 ```python
 http_profile = HttpProfile()
 http_profile.keepAlive = True        # 启用 Keep-Alive
 http_profile.pre_conn_pool_size = 3  # 连接池大小
 ```
+
+| 参数 | 说明 |
+|------|------|
+| `keepAlive` | 启用后复用 TCP 连接，避免重复握手，降低后续请求延迟 |
+| `pre_conn_pool_size` | 预建连接池大小，提前建立连接，首次请求也能快速响应 |
+
+> 启用 Keep-Alive 后，连续请求可节省约 50-100ms 的连接建立时间
 
 ## API 文档
 
