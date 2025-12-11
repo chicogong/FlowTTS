@@ -55,6 +55,8 @@ See [TRTC Activation & Billing](https://cloud.tencent.com/document/product/647/1
 pip install -r requirements.txt
 ```
 
+> Note: Please ensure you install the latest version of Tencent Cloud SDK (>=3.0.1200) for full TTS feature support.
+
 ### 3. Configure Environment Variables
 
 ```bash
