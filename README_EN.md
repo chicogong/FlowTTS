@@ -98,13 +98,20 @@ python examples/example_simple.py
 
 ## Keep-Alive Connection
 
-The SDK supports HTTP Keep-Alive for better performance:
+The SDK supports HTTP Keep-Alive to reuse TCP connections and reduce latency:
 
 ```python
 http_profile = HttpProfile()
 http_profile.keepAlive = True        # Enable Keep-Alive
 http_profile.pre_conn_pool_size = 3  # Connection pool size
 ```
+
+| Parameter | Description |
+|-----------|-------------|
+| `keepAlive` | Reuses TCP connections, avoids repeated handshakes, reduces latency for subsequent requests |
+| `pre_conn_pool_size` | Pre-established connection pool size, connections are ready before first request |
+
+> With Keep-Alive enabled, consecutive requests save approximately 50-100ms of connection establishment time
 
 ## API Documentation
 
