@@ -55,6 +55,8 @@ FlowTTS 依托 TRTC AI 对话方案使用，需先开通以下任一服务：
 pip install -r requirements.txt
 ```
 
+> 注意：请确保安装最新版本的腾讯云 SDK（>=3.0.1200），以获得完整的 TTS 功能支持。
+
 ### 3. 配置环境变量
 
 ```bash
