@@ -20,7 +20,7 @@ load_dotenv()
 
 # ========== Configuration ==========
 # Environment variable takes priority, fallback to default
-SDK_APP_ID = int(os.getenv("TENCENTCLOUD_SDK_APP_ID", "1400000000"))
+SDK_APP_ID = int(os.getenv("TENCENTCLOUD_SDK_APP_ID") or os.getenv("SDKAPPID") or "1400000000")
 MODEL = "flow_01_turbo"
 
 VOICE_CONFIG = {
@@ -49,10 +49,9 @@ def create_client():
     )
 
     http_profile = HttpProfile()
-    http_profile.endpoint = os.getenv(
-        "TENCENTCLOUD_ENDPOINT",
-        "trtc.ai.tencentcloudapi.com"
-    )
+    # Streaming SSE API uses trtc.ai.tencentcloudapi.com
+    # (Non-streaming and Voice Clone APIs use trtc.tencentcloudapi.com)
+    http_profile.endpoint = "trtc.ai.tencentcloudapi.com"
     http_profile.reqTimeout = 120
     http_profile.keepAlive = True        # Enable Keep-Alive
     http_profile.pre_conn_pool_size = 3  # Connection pool size

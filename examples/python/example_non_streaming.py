@@ -27,7 +27,7 @@ from tencentcloud.trtc.v20190722 import trtc_client, models
 load_dotenv()
 
 # ========== Configuration ==========
-SDK_APP_ID = int(os.getenv("TENCENTCLOUD_SDK_APP_ID", "1400000000"))
+SDK_APP_ID = int(os.getenv("TENCENTCLOUD_SDK_APP_ID") or os.getenv("SDKAPPID") or "1400000000")
 MODEL = "flow_01_turbo"
 
 VOICE_CONFIG = {
@@ -61,10 +61,9 @@ def create_client():
     cred = credential.Credential(secret_id, secret_key)
     
     http_profile = HttpProfile()
-    http_profile.endpoint = os.getenv(
-        "TENCENTCLOUD_ENDPOINT",
-        "trtc.ai.tencentcloudapi.com"
-    )
+    # Non-streaming API uses trtc.tencentcloudapi.com
+    # (Streaming SSE API uses trtc.ai.tencentcloudapi.com)
+    http_profile.endpoint = "trtc.tencentcloudapi.com"
     http_profile.reqTimeout = 120
     http_profile.keepAlive = True
     http_profile.pre_conn_pool_size = 3

@@ -18,12 +18,16 @@ from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentClo
 load_dotenv()
 
 # ========== Configuration ==========
-SDK_APP_ID = int(os.getenv("TENCENTCLOUD_SDK_APP_ID", "1400000000"))
+SDK_APP_ID = int(os.getenv("TENCENTCLOUD_SDK_APP_ID") or os.getenv("SDKAPPID") or "1400000000")
 MODEL = "flow_01_turbo"
 
 # Voice clone settings
-CLONE_AUDIO_FILE = "./test_data/clone_sample.wav"  # 16kHz mono WAV, 10-180 seconds
+CLONE_AUDIO_FILE = os.path.join(os.path.dirname(__file__), "../../test_data/clone_sample.wav")  # 16kHz mono WAV, 10-180 seconds
 VOICE_NAME = "MyClonedVoice"
+# (Optional) Transcript of the reference audio, improves clone quality
+PROMPT_TEXT = ""
+# (Optional) Language of the reference audio (ISO 639-1): zh/en/yue/ja/ko, default auto
+LANGUAGE = ""
 # ===================================
 
 
@@ -38,10 +42,9 @@ def create_client():
     )
 
     http_profile = HttpProfile()
-    http_profile.endpoint = os.getenv(
-        "TENCENTCLOUD_ENDPOINT",
-        "trtc.tencentcloudapi.com"
-    )
+    # Voice Clone API uses trtc.tencentcloudapi.com
+    # (Streaming SSE API uses trtc.ai.tencentcloudapi.com)
+    http_profile.endpoint = "trtc.tencentcloudapi.com"
     http_profile.reqTimeout = 120
     http_profile.keepAlive = True        # Enable Keep-Alive
     http_profile.pre_conn_pool_size = 3  # Connection pool size
@@ -75,8 +78,14 @@ def voice_clone(client, audio_file, voice_name):
         "Model": MODEL,
         "SdkAppId": SDK_APP_ID,
         "VoiceName": voice_name,
-        "PromptAudio": audio_base64
+        "PromptAudio": audio_base64,
     }
+    # Optional: provide transcript of the reference audio for better quality
+    if PROMPT_TEXT:
+        params["PromptText"] = PROMPT_TEXT
+    # Optional: specify language (ISO 639-1)
+    if LANGUAGE:
+        params["Language"] = LANGUAGE
     req.from_json_string(json.dumps(params))
 
     print(f"Cloning voice: {voice_name}")
@@ -88,7 +97,7 @@ def voice_clone(client, audio_file, voice_name):
 
         print(f"Voice cloned successfully!")
         print(f"Voice ID: {voice_id}")
-        print(f"\nNext: Use this voice_id in example_simple.py")
+        print(f"\nNext: Use this voice_id in example_streaming.py")
         print(f"Update VOICE_CONFIG:")
         print(f'  "VoiceId": "{voice_id}"')
         return voice_id

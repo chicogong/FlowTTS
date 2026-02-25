@@ -1,0 +1,19 @@
+{
+  "name": "flowtts-nodejs-examples",
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "streaming": "node example_streaming.js",
+    "non-streaming": "node example_non_streaming.js",
+    "voice-clone": "node example_voice_clone.js",
+    "ws-bidirection": "node example_ws_bidirection.js"
+  },
+  "dependencies": {
+    "tencentcloud-sdk-nodejs": "^4.0.0",
+    "dotenv": "^16.0.0",
+    "ws": "^8.0.0"
+  }
+}

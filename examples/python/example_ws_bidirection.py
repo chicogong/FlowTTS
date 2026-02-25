@@ -1,3 +1,4 @@
+import os
 import aiohttp
 import asyncio
 import json
@@ -7,12 +8,14 @@ import hashlib
 import urllib.parse as parse
 import uuid
 import base64
+from dotenv import load_dotenv
 
-# 请填写你的配置信息
-SECRET_ID = "your_secret_id"
-SECRET_KEY = "your_secret_key"
-APP_ID = 0
-SDK_APP_ID = 0
+load_dotenv()
+
+SECRET_ID = os.getenv("TENCENTCLOUD_SECRET_ID", "your_secret_id")
+SECRET_KEY = os.getenv("TENCENTCLOUD_SECRET_KEY", "your_secret_key")
+SDK_APP_ID = int(os.getenv("TENCENTCLOUD_SDK_APP_ID") or os.getenv("SDKAPPID") or "0")
+APP_ID = SDK_APP_ID
 
 HOST = "flowtts.cloud.tencent.com"
 
