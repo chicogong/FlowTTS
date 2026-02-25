@@ -191,6 +191,7 @@ Node.js HTTP agent 默认支持连接复用，无需额外配置。
 ## API 文档
 
 - [SSE 流式文本转语音 API](https://cloud.tencent.com/document/product/647/122474)
+- [非流式文本转语音 API](https://cloud.tencent.com/document/api/647/122475)
 - [声音克隆 API](https://cloud.tencent.com/document/product/647/122473)
 
 ## TRTC AI 对话集成

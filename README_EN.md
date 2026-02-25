@@ -191,6 +191,7 @@ Node.js HTTP agent supports connection reuse by default, no additional configura
 ## API Documentation
 
 - [SSE Streaming Text-to-Speech API](https://cloud.tencent.com/document/product/647/122474)
+- [Non-streaming Text-to-Speech API](https://cloud.tencent.com/document/api/647/122475)
 - [Voice Cloning API](https://cloud.tencent.com/document/product/647/122473)
 
 ## TRTC AI Conversation Integration
