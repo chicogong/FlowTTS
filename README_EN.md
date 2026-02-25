@@ -6,6 +6,7 @@
 
 [![TRTC](https://img.shields.io/badge/TRTC-AI-blue.svg)](https://cloud.tencent.com/product/trtc)
 [![Python](https://img.shields.io/badge/Python-3.8+-green.svg)](https://www.python.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Tencent-RTC/FlowTTS/pulls)
 
@@ -51,11 +52,23 @@ See [TRTC Activation & Billing](https://cloud.tencent.com/document/product/647/1
 
 ### 2. Install Dependencies
 
+**Python**
+
 ```bash
+cd examples/python
 pip install -r requirements.txt
 ```
 
 > Note: Please ensure you install the latest version of Tencent Cloud SDK (>=3.0.1200) for full TTS feature support.
+
+**Node.js**
+
+```bash
+cd examples/nodejs
+npm install
+```
+
+> Requires Node.js >= 18.
 
 ### 3. Configure Environment Variables
 
@@ -75,10 +88,38 @@ Get credentials from [Tencent Cloud Console](https://console.cloud.tencent.com/c
 
 ### 4. Run Examples
 
-#### Basic TTS Example
+#### Python
 
 ```bash
-python examples/example_simple.py
+# Streaming TTS
+python examples/python/example_streaming.py
+
+# Non-streaming TTS
+python examples/python/example_non_streaming.py
+
+# Voice cloning
+python examples/python/example_voice_clone.py
+
+# WebSocket bidirectional streaming
+python examples/python/example_ws_bidirection.py
+```
+
+#### Node.js
+
+```bash
+cd examples/nodejs
+
+# Streaming TTS
+node example_streaming.js
+
+# Non-streaming TTS
+node example_non_streaming.js
+
+# Voice cloning
+node example_voice_clone.js
+
+# WebSocket bidirectional streaming
+node example_ws_bidirection.js
 ```
 
 #### Voice Clone Example
@@ -88,11 +129,11 @@ python examples/example_simple.py
 cp your_voice.wav test_data/clone_sample.wav
 
 # 2. Clone voice and get voice_id
-python examples/example_voice_clone.py
+python examples/python/example_voice_clone.py
 
-# 3. Use the returned voice_id in example_simple.py for TTS
+# 3. Use the returned voice_id in example_streaming.py for TTS
 # Update VOICE_CONFIG["VoiceId"] with the cloned voice_id
-python examples/example_simple.py
+python examples/python/example_streaming.py
 ```
 
 ## Configuration
@@ -110,13 +151,25 @@ python examples/example_simple.py
 | API Type | Formats | Sample Rates |
 |----------|---------|--------------|
 | Streaming (SSE) | pcm | 16000, 24000 |
-| Non-streaming | pcm, wav | 16000, 24000 |
+| Non-streaming | pcm, wav, mp3 | 16000, 24000 |
 
 > Default format: pcm, default sample rate: 24000
+
+### API Endpoint
+
+Different APIs use different endpoints:
+
+| API | Endpoint |
+|-----|----------|
+| Streaming SSE (`TextToSpeechSSE`) | `trtc.ai.tencentcloudapi.com` |
+| Non-streaming (`TextToSpeech`) | `trtc.tencentcloudapi.com` |
+| Voice Clone (`VoiceClone`) | `trtc.tencentcloudapi.com` |
 
 ## Keep-Alive Connection
 
 The SDK supports HTTP Keep-Alive to reuse TCP connections and reduce latency:
+
+**Python**
 
 ```python
 http_profile = HttpProfile()
@@ -130,6 +183,10 @@ http_profile.pre_conn_pool_size = 3  # Connection pool size
 | `pre_conn_pool_size` | Pre-established connection pool size, connections are ready before first request |
 
 > With Keep-Alive enabled, consecutive requests save approximately 50-100ms of connection establishment time
+
+**Node.js**
+
+Node.js HTTP agent supports connection reuse by default, no additional configuration needed.
 
 ## API Documentation
 

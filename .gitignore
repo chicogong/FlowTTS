@@ -45,6 +45,9 @@ htmlcov/
 .tox/
 .nox/
 
+# Node.js
+node_modules/
+
 # Audio output files
 *.wav
 !test_data/*.wav

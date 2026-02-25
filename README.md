@@ -6,6 +6,7 @@
 
 [![TRTC](https://img.shields.io/badge/TRTC-AI-blue.svg)](https://cloud.tencent.com/product/trtc)
 [![Python](https://img.shields.io/badge/Python-3.8+-green.svg)](https://www.python.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Tencent-RTC/FlowTTS/pulls)
 
@@ -51,11 +52,23 @@ FlowTTS 依托 TRTC AI 对话方案使用，需先开通以下任一服务：
 
 ### 2. 安装依赖
 
+**Python**
+
 ```bash
+cd examples/python
 pip install -r requirements.txt
 ```
 
 > 注意：请确保安装最新版本的腾讯云 SDK（>=3.0.1200），以获得完整的 TTS 功能支持。
+
+**Node.js**
+
+```bash
+cd examples/nodejs
+npm install
+```
+
+> 需要 Node.js >= 18。
 
 ### 3. 配置环境变量
 
@@ -75,10 +88,38 @@ TENCENTCLOUD_SDK_APP_ID=1400000000
 
 ### 4. 运行示例
 
-#### 基础 TTS 示例
+#### Python
 
 ```bash
-python examples/example_simple.py
+# 流式 TTS
+python examples/python/example_streaming.py
+
+# 非流式 TTS
+python examples/python/example_non_streaming.py
+
+# 声音克隆
+python examples/python/example_voice_clone.py
+
+# WebSocket 双向流式
+python examples/python/example_ws_bidirection.py
+```
+
+#### Node.js
+
+```bash
+cd examples/nodejs
+
+# 流式 TTS
+node example_streaming.js
+
+# 非流式 TTS
+node example_non_streaming.js
+
+# 声音克隆
+node example_voice_clone.js
+
+# WebSocket 双向流式
+node example_ws_bidirection.js
 ```
 
 #### 声音克隆示例
@@ -88,11 +129,11 @@ python examples/example_simple.py
 cp your_voice.wav test_data/clone_sample.wav
 
 # 2. 克隆声音，获取 voice_id
-python examples/example_voice_clone.py
+python examples/python/example_voice_clone.py
 
-# 3. 在 example_simple.py 中使用返回的 voice_id 进行 TTS 合成
+# 3. 在 example_streaming.py 中使用返回的 voice_id 进行 TTS 合成
 # 修改 VOICE_CONFIG["VoiceId"] 为克隆返回的 voice_id
-python examples/example_simple.py
+python examples/python/example_streaming.py
 ```
 
 ## 参数配置
@@ -110,13 +151,25 @@ python examples/example_simple.py
 | 接口类型 | 支持格式 | 采样率 |
 |----------|----------|--------|
 | 流式 (SSE) | pcm | 16000, 24000 |
-| 非流式 | pcm, wav | 16000, 24000 |
+| 非流式 | pcm, wav, mp3 | 16000, 24000 |
 
 > 默认格式：pcm，默认采样率：24000
+
+### API Endpoint
+
+不同接口使用不同的 endpoint，请注意区分：
+
+| 接口 | Endpoint |
+|------|----------|
+| 流式 SSE (`TextToSpeechSSE`) | `trtc.ai.tencentcloudapi.com` |
+| 非流式 (`TextToSpeech`) | `trtc.tencentcloudapi.com` |
+| 声音克隆 (`VoiceClone`) | `trtc.tencentcloudapi.com` |
 
 ## Keep-Alive 长连接
 
 SDK 支持 HTTP Keep-Alive，复用 TCP 连接以降低延迟：
+
+**Python**
 
 ```python
 http_profile = HttpProfile()
@@ -130,6 +183,10 @@ http_profile.pre_conn_pool_size = 3  # 连接池大小
 | `pre_conn_pool_size` | 预建连接池大小，提前建立连接，首次请求也能快速响应 |
 
 > 启用 Keep-Alive 后，连续请求可节省约 50-100ms 的连接建立时间
+
+**Node.js**
+
+Node.js HTTP agent 默认支持连接复用，无需额外配置。
 
 ## API 文档
 
